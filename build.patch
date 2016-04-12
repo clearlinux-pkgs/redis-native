@@ -1,0 +1,38 @@
+--- redis-3.0.7/src/Makefile~	2016-01-25 14:57:52.000000000 +0000
++++ redis-3.0.7/src/Makefile	2016-04-12 22:03:22.070570607 +0000
+@@ -14,7 +14,7 @@
+ 
+ release_hdr := $(shell sh -c './mkreleasehdr.sh')
+ uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
+-OPTIMIZATION?=-O2
++OPTIMIZATION?=-O3
+ DEPENDENCY_TARGETS=hiredis linenoise lua
+ 
+ # Default settings
+@@ -22,7 +22,7 @@
+ WARN=-Wall -W
+ OPT=$(OPTIMIZATION)
+ 
+-PREFIX?=/usr/local
++PREFIX?=/usr
+ INSTALL_BIN=$(PREFIX)/bin
+ INSTALL=install
+ 
+@@ -245,10 +245,10 @@
+ 	@../utils/generate-command-help.rb > help.h
+ 
+ install: all
+-	@mkdir -p $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_BENCHMARK_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_CLI_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_CHECK_DUMP_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_CHECK_AOF_NAME) $(INSTALL_BIN)
+-	@ln -sf $(REDIS_SERVER_NAME) $(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
++	@mkdir -p $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_BENCHMARK_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_CLI_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_CHECK_DUMP_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_CHECK_AOF_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
