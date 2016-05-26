@@ -4,12 +4,13 @@
 #
 Name     : redis-native
 Version  : 3.2.0
-Release  : 7
+Release  : 8
 URL      : http://download.redis.io/releases/redis-3.2.0.tar.gz
 Source0  : http://download.redis.io/releases/redis-3.2.0.tar.gz
 Summary  : An Extensible Extension Language
 Group    : Development/Tools
 License  : BSD-2-Clause BSD-3-Clause MIT
+Requires: redis-native-bin
 BuildRequires : jemalloc-dev
 BuildRequires : lua-dev
 Patch1: build_3.20.patch
@@ -19,8 +20,15 @@ The test-lru.rb program can be used in order to check the behavior of the
 Redis approximated LRU algorithm against the theoretical output of true
 LRU algorithm.
 
+%package bin
+Summary: bin components for the redis-native package.
+Group: Binaries
+
+%description bin
+bin components for the redis-native package.
+
+
 %prep
-cd ..
 %setup -q -n redis-3.2.0
 %patch1 -p1
 
@@ -33,9 +41,12 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-/usr/local/bin/redis-benchmark
-/usr/local/bin/redis-check-aof
-/usr/local/bin/redis-check-rdb
-/usr/local/bin/redis-cli
-/usr/local/bin/redis-sentinel
-/usr/local/bin/redis-server
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/redis-benchmark
+/usr/bin/redis-check-aof
+/usr/bin/redis-check-rdb
+/usr/bin/redis-cli
+/usr/bin/redis-sentinel
+/usr/bin/redis-server
