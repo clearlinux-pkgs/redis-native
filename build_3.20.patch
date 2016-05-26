@@ -1,0 +1,31 @@
+diff --git a/src/Makefile b/src/Makefile
+index 8d34ab0..bbbf409 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -14,7 +14,7 @@
+ 
+ release_hdr := $(shell sh -c './mkreleasehdr.sh')
+ uname_S := $(shell sh -c 'uname -s 2>/dev/null || echo not')
+-OPTIMIZATION?=-O2
++OPTIMIZATION?=-O3
+ DEPENDENCY_TARGETS=hiredis linenoise lua geohash-int
+ 
+ # Default settings
+@@ -253,10 +253,10 @@ src/help.h:
+ 	@../utils/generate-command-help.rb > help.h
+ 
+ install: all
+-	@mkdir -p $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_BENCHMARK_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_CLI_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_CHECK_RDB_NAME) $(INSTALL_BIN)
+-	$(REDIS_INSTALL) $(REDIS_CHECK_AOF_NAME) $(INSTALL_BIN)
+-	@ln -sf $(REDIS_SERVER_NAME) $(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
++	@mkdir -p $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_BENCHMARK_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_CLI_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_CHECK_RDB_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(REDIS_INSTALL) $(REDIS_CHECK_AOF_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
