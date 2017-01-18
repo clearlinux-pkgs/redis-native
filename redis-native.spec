@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 3.0.7
-Release  : 10
+Release  : 11
 URL      : http://download.redis.io/releases/redis-3.0.7.tar.gz
 Source0  : http://download.redis.io/releases/redis-3.0.7.tar.gz
 Summary  : An Extensible Extension Language
@@ -14,6 +14,7 @@ Requires: redis-native-bin
 BuildRequires : jemalloc-dev
 BuildRequires : lua-dev
 Patch1: build.patch
+Patch2: timestamp.patch
 
 %description
 Where to find complete Redis documentation?
@@ -30,11 +31,15 @@ bin components for the redis-native package.
 %prep
 %setup -q -n redis-3.0.7
 %patch1 -p1
+%patch2 -p1
 
 %build
+export LANG=C
+export SOURCE_DATE_EPOCH=1484702253
 make V=1  %{?_smp_mflags}
 
 %install
+export SOURCE_DATE_EPOCH=1484702253
 rm -rf %{buildroot}
 %make_install
 
