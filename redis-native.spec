@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 3.0.7
-Release  : 11
+Release  : 12
 URL      : http://download.redis.io/releases/redis-3.0.7.tar.gz
 Source0  : http://download.redis.io/releases/redis-3.0.7.tar.gz
 Summary  : An Extensible Extension Language
