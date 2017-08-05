@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 3.0.7
-Release  : 13
+Release  : 14
 URL      : http://download.redis.io/releases/redis-3.0.7.tar.gz
 Source0  : http://download.redis.io/releases/redis-3.0.7.tar.gz
 Summary  : An Extensible Extension Language
@@ -34,12 +34,22 @@ bin components for the redis-native package.
 %patch2 -p1
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1484702253
-make V=1  %{?_smp_mflags}
+export SOURCE_DATE_EPOCH=1501972886
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+make V=1  %{?_smp_mflags} MALLOC=libc
 
 %install
-export SOURCE_DATE_EPOCH=1484702253
+export SOURCE_DATE_EPOCH=1501972886
 rm -rf %{buildroot}
 %make_install
 
