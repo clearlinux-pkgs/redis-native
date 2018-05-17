@@ -2,3 +2,7 @@
 # picked up automatically. One name per line, no whitespace.
 jemalloc-dev
 lua-dev
+# tests are written in TCL
+tcl
+# test suite requires /usr/bin/kill
+procps-ng

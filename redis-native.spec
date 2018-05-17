@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 4.0.9
-Release  : 17
+Release  : 19
 URL      : http://download.redis.io/releases/redis-4.0.9.tar.gz
 Source0  : http://download.redis.io/releases/redis-4.0.9.tar.gz
 Summary  : An Extensible Extension Language
@@ -13,6 +13,8 @@ License  : BSD-2-Clause BSD-3-Clause MIT
 Requires: redis-native-bin
 BuildRequires : jemalloc-dev
 BuildRequires : lua-dev
+BuildRequires : procps-ng
+BuildRequires : tcl
 Patch1: 0001-Use-O3-optimization.patch
 Patch2: 0002-Install-to-usr-honor-DESTDIR-for-install.patch
 Patch3: 0003-Set-release-timestamp-to-SOURCE_DATE_EPOCH.patch
@@ -41,7 +43,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526597992
+export SOURCE_DATE_EPOCH=1526602271
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -51,8 +53,15 @@ export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-m
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 make  %{?_smp_mflags} MALLOC=libc
 
+%check
+export LANG=C
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
+make -C src %{_smp_mflags} check
+
 %install
-export SOURCE_DATE_EPOCH=1526597992
+export SOURCE_DATE_EPOCH=1526602271
 rm -rf %{buildroot}
 %make_install
 
