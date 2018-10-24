@@ -1,7 +1,7 @@
-From 68988357605fd9be23b54730cbc4ab688480512d Mon Sep 17 00:00:00 2001
+From 01007d0994ade1f88fda3c3c26245671e7f54e7d Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Thu, 17 May 2018 15:49:23 -0700
-Subject: [PATCH 2/3] Install to /usr; honor DESTDIR for install
+Subject: [PATCH 2/2] Install to /usr; honor DESTDIR for install
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 4d07db2..79fa69b 100644
+index a8b96de..d2e3be3 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -24,7 +24,7 @@ STD=-std=c99 -pedantic -DREDIS_STATIC=''
@@ -40,5 +40,5 @@ index 4d07db2..79fa69b 100644
 +	$(REDIS_INSTALL) $(REDIS_CHECK_AOF_NAME) $(DESTDIR)/$(INSTALL_BIN)
 +	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
 -- 
-2.17.0
+2.19.1
 
