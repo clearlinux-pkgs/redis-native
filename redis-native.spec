@@ -4,14 +4,16 @@
 #
 Name     : redis-native
 Version  : 5.0.3
-Release  : 26
+Release  : 27
 URL      : http://download.redis.io/releases/redis-5.0.3.tar.gz
 Source0  : http://download.redis.io/releases/redis-5.0.3.tar.gz
+Source1  : redis.service
 Summary  : An Extensible Extension Language
 Group    : Development/Tools
 License  : BSD-2-Clause BSD-3-Clause MIT
 Requires: redis-native-bin = %{version}-%{release}
 Requires: redis-native-license = %{version}-%{release}
+Requires: redis-native-services = %{version}-%{release}
 BuildRequires : jemalloc-dev
 BuildRequires : lua-dev
 BuildRequires : procps-ng
@@ -28,6 +30,7 @@ LRU algorithm.
 Summary: bin components for the redis-native package.
 Group: Binaries
 Requires: redis-native-license = %{version}-%{release}
+Requires: redis-native-services = %{version}-%{release}
 
 %description bin
 bin components for the redis-native package.
@@ -41,6 +44,14 @@ Group: Default
 license components for the redis-native package.
 
 
+%package services
+Summary: services components for the redis-native package.
+Group: Systemd services
+
+%description services
+services components for the redis-native package.
+
+
 %prep
 %setup -q -n redis-5.0.3
 %patch1 -p1
@@ -51,7 +62,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1544673290
+export SOURCE_DATE_EPOCH=1549321833
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -70,7 +81,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C src %{_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1544673290
+export SOURCE_DATE_EPOCH=1549321833
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/redis-native
 cp COPYING %{buildroot}/usr/share/package-licenses/redis-native/COPYING
@@ -78,6 +89,8 @@ cp deps/hiredis/COPYING %{buildroot}/usr/share/package-licenses/redis-native/dep
 cp deps/jemalloc/COPYING %{buildroot}/usr/share/package-licenses/redis-native/deps_jemalloc_COPYING
 cp deps/lua/COPYRIGHT %{buildroot}/usr/share/package-licenses/redis-native/deps_lua_COPYRIGHT
 %make_install
+mkdir -p %{buildroot}/usr/lib/systemd/system
+install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/redis.service
 
 %files
 %defattr(-,root,root,-)
@@ -97,3 +110,7 @@ cp deps/lua/COPYRIGHT %{buildroot}/usr/share/package-licenses/redis-native/deps_
 /usr/share/package-licenses/redis-native/deps_hiredis_COPYING
 /usr/share/package-licenses/redis-native/deps_jemalloc_COPYING
 /usr/share/package-licenses/redis-native/deps_lua_COPYRIGHT
+
+%files services
+%defattr(-,root,root,-)
+/usr/lib/systemd/system/redis.service
