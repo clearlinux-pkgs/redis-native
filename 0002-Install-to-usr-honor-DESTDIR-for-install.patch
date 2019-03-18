@@ -1,4 +1,4 @@
-From 01007d0994ade1f88fda3c3c26245671e7f54e7d Mon Sep 17 00:00:00 2001
+From d5004a98113d2d63d9ce43c8017ca654fdd5618d Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Thu, 17 May 2018 15:49:23 -0700
 Subject: [PATCH 2/2] Install to /usr; honor DESTDIR for install
@@ -9,10 +9,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index a8b96de..d2e3be3 100644
+index 509017b..65b62aa 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -24,7 +24,7 @@ STD=-std=c99 -pedantic -DREDIS_STATIC=''
+@@ -29,7 +29,7 @@ endif
  WARN=-Wall -W -Wno-missing-field-initializers
  OPT=$(OPTIMIZATION)
  
@@ -21,7 +21,7 @@ index a8b96de..d2e3be3 100644
  INSTALL_BIN=$(PREFIX)/bin
  INSTALL=install
  
-@@ -283,10 +283,10 @@ src/help.h:
+@@ -303,13 +303,13 @@ src/help.h:
  	@../utils/generate-command-help.rb > help.h
  
  install: all
@@ -39,6 +39,9 @@ index a8b96de..d2e3be3 100644
 +	$(REDIS_INSTALL) $(REDIS_CHECK_RDB_NAME) $(DESTDIR)/$(INSTALL_BIN)
 +	$(REDIS_INSTALL) $(REDIS_CHECK_AOF_NAME) $(DESTDIR)/$(INSTALL_BIN)
 +	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
+ 
+ uninstall:
+ 	rm -f $(INSTALL_BIN)/{$(REDIS_SERVER_NAME),$(REDIS_BENCHMARK_NAME),$(REDIS_CLI_NAME),$(REDIS_CHECK_RDB_NAME),$(REDIS_CHECK_AOF_NAME),$(REDIS_SENTINEL_NAME)}
 -- 
-2.19.1
+2.20.1
 
