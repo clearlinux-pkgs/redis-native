@@ -1,2 +1,3 @@
 0001-Use-O3-optimization.patch
 0002-Install-to-usr-honor-DESTDIR-for-install.patch
+0003-Modify-default-config-to-include-a-possible-local-ov.patch

@@ -1,0 +1,4 @@
+mkdir -p %{buildroot}/usr/share/doc/redis
+install sentinel.conf %{buildroot}/usr/share/doc/redis/
+mkdir -p %{buildroot}/usr/share/defaults/etc
+install redis.conf %{buildroot}/usr/share/defaults/etc/

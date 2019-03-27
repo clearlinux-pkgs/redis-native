@@ -5,7 +5,10 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/redis-server
+Type=notify
+User=redis
+LimitNOFILE=500000
+ExecStart=/usr/bin/redis-server /usr/share/defaults/etc/redis.conf
 ExecStop=/usr/bin/redis-cli shutdown
 
 [Install]

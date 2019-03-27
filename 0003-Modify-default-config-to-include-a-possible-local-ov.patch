@@ -1,0 +1,72 @@
+From 2211d1c44100f6ef027ff0bf9bd7447dafb86a14 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Wed, 27 Mar 2019 10:15:43 -0700
+Subject: [PATCH] Modify default config to include a possible local override
+ config.
+
+- disable auto-saving (optional, non-default feature)
+- enable systemd notify service use
+- move save path to /var/lib/redis which is created already
+- ignore errors loading /etc/redis.conf (allow it to be missing)
+---
+ redis.conf   | 12 +++++++-----
+ src/config.c |  2 ++
+ 2 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/redis.conf b/redis.conf
+index 93ab9a4..81ebb3f 100644
+--- a/redis.conf
++++ b/redis.conf
+@@ -144,7 +144,7 @@ daemonize no
+ #                        UPSTART_JOB or NOTIFY_SOCKET environment variables
+ # Note: these supervision methods only signal "process is ready."
+ #       They do not enable continuous liveness pings back to your supervisor.
+-supervised no
++supervised systemd
+ 
+ # If a pid file is specified, Redis writes it where specified at startup
+ # and removes it at exit.
+@@ -215,9 +215,9 @@ always-show-logo yes
+ #
+ #   save ""
+ 
+-save 900 1
+-save 300 10
+-save 60 10000
++# save 900 1
++# save 300 10
++# save 60 10000
+ 
+ # By default Redis will stop accepting writes if RDB snapshots are enabled
+ # (at least one save point) and the latest background save failed.
+@@ -260,7 +260,7 @@ dbfilename dump.rdb
+ # The Append Only File will also be created inside this directory.
+ #
+ # Note that you must specify a directory here, not a file name.
+-dir ./
++dir /var/lib/redis/
+ 
+ ################################# REPLICATION #################################
+ 
+@@ -1376,3 +1376,5 @@ rdb-save-incremental-fsync yes
+ # the main dictionary scan
+ # active-defrag-max-scan-fields 1000
+ 
++# Local options override the default global ones:
++include /etc/redis.conf
+diff --git a/src/config.c b/src/config.c
+index 99f12f3..2c64328 100644
+--- a/src/config.c
++++ b/src/config.c
+@@ -843,6 +843,8 @@ void loadServerConfig(char *filename, char *options) {
+             fp = stdin;
+         } else {
+             if ((fp = fopen(filename,"r")) == NULL) {
++                if (strcmp(filename, "/etc/redis.conf") == 0)
++                    return;
+                 serverLog(LL_WARNING,
+                     "Fatal error, can't open config file '%s'", filename);
+                 exit(1);
+-- 
+2.21.0
+
