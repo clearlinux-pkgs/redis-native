@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 5.0.6
-Release  : 36
+Release  : 37
 URL      : http://download.redis.io/releases/redis-5.0.6.tar.gz
 Source0  : http://download.redis.io/releases/redis-5.0.6.tar.gz
 Source1  : redis-native.tmpfiles
@@ -24,6 +24,7 @@ BuildRequires : tcl
 Patch1: 0001-Use-O3-optimization.patch
 Patch2: 0002-Install-to-usr-honor-DESTDIR-for-install.patch
 Patch3: 0003-Modify-default-config-to-include-a-possible-local-ov.patch
+Patch4: CVE-2014-5461.patch
 
 %description
 The test-lru.rb program can be used in order to check the behavior of the
@@ -87,21 +88,22 @@ services components for the redis-native package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570075624
+export SOURCE_DATE_EPOCH=1571441040
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -fstack-protector-strong -mzero-caller-saved-regs=used "
 make  %{?_smp_mflags}  MALLOC=libc
 
 
@@ -113,13 +115,13 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C src %{_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1570075624
+export SOURCE_DATE_EPOCH=1571441040
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/redis-native
-cp COPYING %{buildroot}/usr/share/package-licenses/redis-native/COPYING
-cp deps/hiredis/COPYING %{buildroot}/usr/share/package-licenses/redis-native/deps_hiredis_COPYING
-cp deps/jemalloc/COPYING %{buildroot}/usr/share/package-licenses/redis-native/deps_jemalloc_COPYING
-cp deps/lua/COPYRIGHT %{buildroot}/usr/share/package-licenses/redis-native/deps_lua_COPYRIGHT
+cp %{_builddir}/redis-5.0.6/COPYING %{buildroot}/usr/share/package-licenses/redis-native/a19e8c78250e9af2bffc5c60e21478c392662dae
+cp %{_builddir}/redis-5.0.6/deps/hiredis/COPYING %{buildroot}/usr/share/package-licenses/redis-native/e9c1298de98016808910005a33de3a5f25dce05e
+cp %{_builddir}/redis-5.0.6/deps/jemalloc/COPYING %{buildroot}/usr/share/package-licenses/redis-native/32366cf8c310f3ab4c264217764166f95f030e00
+cp %{_builddir}/redis-5.0.6/deps/lua/COPYRIGHT %{buildroot}/usr/share/package-licenses/redis-native/a6efc4d11f332f4843bc25b557c6bf3e5ef51458
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE2} %{buildroot}/usr/lib/systemd/system/redis.service
@@ -158,10 +160,10 @@ install redis.conf %{buildroot}/usr/share/defaults/etc/
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/redis-native/COPYING
-/usr/share/package-licenses/redis-native/deps_hiredis_COPYING
-/usr/share/package-licenses/redis-native/deps_jemalloc_COPYING
-/usr/share/package-licenses/redis-native/deps_lua_COPYRIGHT
+/usr/share/package-licenses/redis-native/32366cf8c310f3ab4c264217764166f95f030e00
+/usr/share/package-licenses/redis-native/a19e8c78250e9af2bffc5c60e21478c392662dae
+/usr/share/package-licenses/redis-native/a6efc4d11f332f4843bc25b557c6bf3e5ef51458
+/usr/share/package-licenses/redis-native/e9c1298de98016808910005a33de3a5f25dce05e
 
 %files services
 %defattr(-,root,root,-)
