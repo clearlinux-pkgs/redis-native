@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 5.0.6
-Release  : 37
+Release  : 38
 URL      : http://download.redis.io/releases/redis-5.0.6.tar.gz
 Source0  : http://download.redis.io/releases/redis-5.0.6.tar.gz
 Source1  : redis-native.tmpfiles
