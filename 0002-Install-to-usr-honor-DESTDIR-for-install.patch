@@ -1,7 +1,7 @@
-From d5004a98113d2d63d9ce43c8017ca654fdd5618d Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Thu, 17 May 2018 15:49:23 -0700
-Subject: [PATCH 2/2] Install to /usr; honor DESTDIR for install
+Subject: [PATCH] Install to /usr; honor DESTDIR for install
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 509017b..65b62aa 100644
+index c1508e7..fd28d0e 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -29,7 +29,7 @@ endif
@@ -20,8 +20,8 @@ index 509017b..65b62aa 100644
 +PREFIX?=/usr
  INSTALL_BIN=$(PREFIX)/bin
  INSTALL=install
- 
-@@ -303,13 +303,13 @@ src/help.h:
+ PKG_CONFIG?=pkg-config
+@@ -349,13 +349,13 @@ src/help.h:
  	@../utils/generate-command-help.rb > help.h
  
  install: all
@@ -42,6 +42,3 @@ index 509017b..65b62aa 100644
  
  uninstall:
  	rm -f $(INSTALL_BIN)/{$(REDIS_SERVER_NAME),$(REDIS_BENCHMARK_NAME),$(REDIS_CLI_NAME),$(REDIS_CHECK_RDB_NAME),$(REDIS_CHECK_AOF_NAME),$(REDIS_SENTINEL_NAME)}
--- 
-2.20.1
-
