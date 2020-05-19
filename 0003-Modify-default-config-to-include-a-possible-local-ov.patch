@@ -16,7 +16,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/redis.conf b/redis.conf
-index 6cec636..c3574b5 100644
+index bab7cff..b915fab 100644
 --- a/redis.conf
 +++ b/redis.conf
 @@ -213,7 +213,7 @@ daemonize no
@@ -50,15 +50,15 @@ index 6cec636..c3574b5 100644
  
  ################################# REPLICATION #################################
  
-@@ -1781,3 +1781,6 @@ rdb-save-incremental-fsync yes
- # Maximum number of set/hash/zset/list fields that will be processed from
- # the main dictionary scan
- # active-defrag-max-scan-fields 1000
+@@ -1809,3 +1809,6 @@ jemalloc-bg-thread yes
+ #
+ # Set bgsave child process to cpu affinity 1,10,11
+ # bgsave_cpulist 1,10-11
 +
 +# Local options override the default global ones:
 +include /etc/redis.conf
 diff --git a/src/config.c b/src/config.c
-index e0cbcc2..1a315aa 100644
+index 6485459..96427f4 100644
 --- a/src/config.c
 +++ b/src/config.c
 @@ -549,6 +549,8 @@ void loadServerConfig(char *filename, char *options) {
