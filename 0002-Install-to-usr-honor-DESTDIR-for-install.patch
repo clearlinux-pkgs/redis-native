@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 4058ffd..07c0150 100644
+index a6e9b12..20dfba7 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -29,7 +29,7 @@ endif
@@ -21,7 +21,7 @@ index 4058ffd..07c0150 100644
  INSTALL_BIN=$(PREFIX)/bin
  INSTALL=install
  PKG_CONFIG?=pkg-config
-@@ -359,13 +359,13 @@ src/help.h:
+@@ -371,13 +371,13 @@ src/help.h:
  	@../utils/generate-command-help.rb > help.h
  
  install: all

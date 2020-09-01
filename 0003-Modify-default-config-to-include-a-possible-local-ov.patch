@@ -16,10 +16,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/redis.conf b/redis.conf
-index bab7cff..b915fab 100644
+index f2e7f19..4e37b63 100644
 --- a/redis.conf
 +++ b/redis.conf
-@@ -213,7 +213,7 @@ daemonize no
+@@ -233,7 +233,7 @@ daemonize no
  #                        UPSTART_JOB or NOTIFY_SOCKET environment variables
  # Note: these supervision methods only signal "process is ready."
  #       They do not enable continuous liveness pings back to your supervisor.
@@ -28,7 +28,7 @@ index bab7cff..b915fab 100644
  
  # If a pid file is specified, Redis writes it where specified at startup
  # and removes it at exit.
-@@ -284,9 +284,9 @@ always-show-logo yes
+@@ -304,9 +304,9 @@ always-show-logo yes
  #
  #   save ""
  
@@ -41,7 +41,7 @@ index bab7cff..b915fab 100644
  
  # By default Redis will stop accepting writes if RDB snapshots are enabled
  # (at least one save point) and the latest background save failed.
-@@ -342,7 +342,7 @@ rdb-del-sync-files no
+@@ -362,7 +362,7 @@ rdb-del-sync-files no
  # The Append Only File will also be created inside this directory.
  #
  # Note that you must specify a directory here, not a file name.
@@ -50,7 +50,7 @@ index bab7cff..b915fab 100644
  
  ################################# REPLICATION #################################
  
-@@ -1809,3 +1809,6 @@ jemalloc-bg-thread yes
+@@ -1859,3 +1859,6 @@ jemalloc-bg-thread yes
  #
  # Set bgsave child process to cpu affinity 1,10,11
  # bgsave_cpulist 1,10-11
@@ -58,15 +58,15 @@ index bab7cff..b915fab 100644
 +# Local options override the default global ones:
 +include /etc/redis.conf
 diff --git a/src/config.c b/src/config.c
-index 6485459..96427f4 100644
+index 52acb52..6e58492 100644
 --- a/src/config.c
 +++ b/src/config.c
-@@ -549,6 +549,8 @@ void loadServerConfig(char *filename, char *options) {
+@@ -613,6 +613,8 @@ void loadServerConfig(char *filename, char *options) {
              fp = stdin;
          } else {
              if ((fp = fopen(filename,"r")) == NULL) {
 +                if (strcmp(filename, "/etc/redis.conf") == 0)
 +                    return;
                  serverLog(LL_WARNING,
-                     "Fatal error, can't open config file '%s'", filename);
-                 exit(1);
+                     "Fatal error, can't open config file '%s': %s",
+                     filename, strerror(errno));
