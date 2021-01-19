@@ -16,7 +16,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  2 files changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/redis.conf b/redis.conf
-index ab0a30c..f684cf4 100644
+index 97f8180..59f142e 100644
 --- a/redis.conf
 +++ b/redis.conf
 @@ -233,7 +233,7 @@ daemonize no
@@ -50,18 +50,18 @@ index ab0a30c..f684cf4 100644
  
  ################################# REPLICATION #################################
  
-@@ -1863,3 +1863,6 @@ jemalloc-bg-thread yes
+@@ -1875,3 +1875,6 @@ jemalloc-bg-thread yes
+ # to suppress
  #
- # Set bgsave child process to cpu affinity 1,10,11
- # bgsave_cpulist 1,10-11
+ # ignore-warnings ARM64-COW-BUG
 +
 +# Local options override the default global ones:
 +include /etc/redis.conf
 diff --git a/src/config.c b/src/config.c
-index 4a956d6..7b5bbcf 100644
+index a85f175..9e98710 100644
 --- a/src/config.c
 +++ b/src/config.c
-@@ -627,6 +627,8 @@ void loadServerConfig(char *filename, char *options) {
+@@ -640,6 +640,8 @@ void loadServerConfig(char *filename, char *options) {
              fp = stdin;
          } else {
              if ((fp = fopen(filename,"r")) == NULL) {
