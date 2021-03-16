@@ -11,37 +11,24 @@ Subject: [PATCH] Modify default config to include a possible local override
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
- redis.conf   | 13 ++++++++-----
- src/config.c |  2 ++
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ redis.conf   | 7 +++++--
+ src/config.c | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/redis.conf b/redis.conf
-index 97f8180..59f142e 100644
+index 465d56f..7c86bbe 100644
 --- a/redis.conf
 +++ b/redis.conf
-@@ -233,7 +233,7 @@ daemonize no
- #                        UPSTART_JOB or NOTIFY_SOCKET environment variables
- # Note: these supervision methods only signal "process is ready."
- #       They do not enable continuous pings back to your supervisor.
--supervised no
+@@ -262,7 +262,7 @@ daemonize no
+ # The default is "no". To run under upstart/systemd, you can simply uncomment
+ # the line below:
+ #
+-# supervised auto
 +supervised systemd
  
  # If a pid file is specified, Redis writes it where specified at startup
  # and removes it at exit.
-@@ -304,9 +304,9 @@ always-show-logo yes
- #
- #   save ""
- 
--save 900 1
--save 300 10
--save 60 10000
-+# save 900 1
-+# save 300 10
-+# save 60 10000
- 
- # By default Redis will stop accepting writes if RDB snapshots are enabled
- # (at least one save point) and the latest background save failed.
-@@ -362,7 +362,7 @@ rdb-del-sync-files no
+@@ -441,7 +441,7 @@ rdb-del-sync-files no
  # The Append Only File will also be created inside this directory.
  #
  # Note that you must specify a directory here, not a file name.
@@ -50,7 +37,7 @@ index 97f8180..59f142e 100644
  
  ################################# REPLICATION #################################
  
-@@ -1875,3 +1875,6 @@ jemalloc-bg-thread yes
+@@ -2011,3 +2011,6 @@ jemalloc-bg-thread yes
  # to suppress
  #
  # ignore-warnings ARM64-COW-BUG
@@ -58,15 +45,15 @@ index 97f8180..59f142e 100644
 +# Local options override the default global ones:
 +include /etc/redis.conf
 diff --git a/src/config.c b/src/config.c
-index a85f175..9e98710 100644
+index 9081d03..10f8828 100644
 --- a/src/config.c
 +++ b/src/config.c
-@@ -640,6 +640,8 @@ void loadServerConfig(char *filename, char *options) {
-             fp = stdin;
-         } else {
-             if ((fp = fopen(filename,"r")) == NULL) {
-+                if (strcmp(filename, "/etc/redis.conf") == 0)
-+                    return;
-                 serverLog(LL_WARNING,
+@@ -667,6 +667,8 @@ void loadServerConfig(char *filename, char config_from_stdin, char *options) {
+     /* Load the file content */
+     if (filename) {
+         if ((fp = fopen(filename,"r")) == NULL) {
++            if (strcmp(filename, "/etc/redis.conf") == 0)
++                return;
+             serverLog(LL_WARNING,
                      "Fatal error, can't open config file '%s': %s",
                      filename, strerror(errno));

@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 3a09ccd..e212da5 100644
+index 3bc9f11..c53e105 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -15,7 +15,7 @@
@@ -18,6 +18,6 @@ index 3a09ccd..e212da5 100644
  uname_M := $(shell sh -c 'uname -m 2>/dev/null || echo not')
 -OPTIMIZATION?=-O2
 +OPTIMIZATION?=-O3
- DEPENDENCY_TARGETS=hiredis linenoise lua
+ DEPENDENCY_TARGETS=hiredis linenoise lua hdr_histogram
  NODEPS:=clean distclean
  

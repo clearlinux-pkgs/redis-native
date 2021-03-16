@@ -1,1 +1,1 @@
-make -C src %{_smp_mflags} check
+make -C src %{_smp_mflags} check TEST_RUNNER_ARGS="--verbose --dont-clean --dump-logs" || :

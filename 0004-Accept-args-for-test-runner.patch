@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Sat, 27 Feb 2021 01:07:07 +0000
+Subject: [PATCH] Accept args for test runner
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index 67a8d20..b3e1766 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -371,7 +371,7 @@ distclean: clean
+ .PHONY: distclean
+ 
+ test: $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME)
+-	@(cd ..; ./runtest)
++	@(cd ..; ./runtest $(TEST_RUNNER_ARGS))
+ 
+ test-sentinel: $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME)
+ 	@(cd ..; ./runtest-sentinel)
