@@ -9,10 +9,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index c53e105..67a8d20 100644
+index 826f6fd..0ca5232 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -39,7 +39,7 @@ else
+@@ -44,7 +44,7 @@ else
  	STD+=-std=c99
  endif
  
@@ -21,21 +21,21 @@ index c53e105..67a8d20 100644
  INSTALL_BIN=$(PREFIX)/bin
  INSTALL=install
  PKG_CONFIG?=pkg-config
-@@ -411,13 +411,13 @@ src/help.h:
+@@ -424,13 +424,13 @@ src/help.h:
  	@../utils/generate-command-help.rb > help.h
  
  install: all
 -	@mkdir -p $(INSTALL_BIN)
--	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(INSTALL_BIN)
--	$(REDIS_INSTALL) $(REDIS_BENCHMARK_NAME) $(INSTALL_BIN)
--	$(REDIS_INSTALL) $(REDIS_CLI_NAME) $(INSTALL_BIN)
+-	$(call MAKE_INSTALL,$(REDIS_SERVER_NAME),$(INSTALL_BIN))
+-	$(call MAKE_INSTALL,$(REDIS_BENCHMARK_NAME),$(INSTALL_BIN))
+-	$(call MAKE_INSTALL,$(REDIS_CLI_NAME),$(INSTALL_BIN))
 -	@ln -sf $(REDIS_SERVER_NAME) $(INSTALL_BIN)/$(REDIS_CHECK_RDB_NAME)
 -	@ln -sf $(REDIS_SERVER_NAME) $(INSTALL_BIN)/$(REDIS_CHECK_AOF_NAME)
 -	@ln -sf $(REDIS_SERVER_NAME) $(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)
 +	@mkdir -p $(DESTDIR)/$(INSTALL_BIN)
-+	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)
-+	$(REDIS_INSTALL) $(REDIS_BENCHMARK_NAME) $(DESTDIR)/$(INSTALL_BIN)
-+	$(REDIS_INSTALL) $(REDIS_CLI_NAME) $(DESTDIR)/$(INSTALL_BIN)
++	$(call MAKE_INSTALL,$(REDIS_SERVER_NAME),$(DESTDIR)/$(INSTALL_BIN))
++	$(call MAKE_INSTALL,$(REDIS_BENCHMARK_NAME),$(DESTDIR)/$(INSTALL_BIN))
++	$(call MAKE_INSTALL,$(REDIS_CLI_NAME),$(DESTDIR)/$(INSTALL_BIN))
 +	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_CHECK_RDB_NAME)
 +	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_CHECK_AOF_NAME)
 +	@ln -sf $(REDIS_SERVER_NAME) $(DESTDIR)/$(INSTALL_BIN)/$(REDIS_SENTINEL_NAME)

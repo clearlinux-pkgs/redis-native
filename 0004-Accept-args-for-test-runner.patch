@@ -9,10 +9,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 67a8d20..b3e1766 100644
+index 0ca5232..c96c31f 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -371,7 +371,7 @@ distclean: clean
+@@ -384,7 +384,7 @@ distclean: clean
  .PHONY: distclean
  
  test: $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME)

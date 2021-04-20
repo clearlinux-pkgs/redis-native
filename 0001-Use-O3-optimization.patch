@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 3bc9f11..c53e105 100644
+index 28d50da..826f6fd 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -15,7 +15,7 @@

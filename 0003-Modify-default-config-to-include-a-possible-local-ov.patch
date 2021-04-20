@@ -16,10 +16,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/redis.conf b/redis.conf
-index 465d56f..7c86bbe 100644
+index e8eff27..f726c11 100644
 --- a/redis.conf
 +++ b/redis.conf
-@@ -262,7 +262,7 @@ daemonize no
+@@ -272,7 +272,7 @@ daemonize no
  # The default is "no". To run under upstart/systemd, you can simply uncomment
  # the line below:
  #
@@ -28,7 +28,7 @@ index 465d56f..7c86bbe 100644
  
  # If a pid file is specified, Redis writes it where specified at startup
  # and removes it at exit.
-@@ -441,7 +441,7 @@ rdb-del-sync-files no
+@@ -451,7 +451,7 @@ rdb-del-sync-files no
  # The Append Only File will also be created inside this directory.
  #
  # Note that you must specify a directory here, not a file name.
@@ -37,7 +37,7 @@ index 465d56f..7c86bbe 100644
  
  ################################# REPLICATION #################################
  
-@@ -2011,3 +2011,6 @@ jemalloc-bg-thread yes
+@@ -2049,3 +2049,6 @@ jemalloc-bg-thread yes
  # to suppress
  #
  # ignore-warnings ARM64-COW-BUG
@@ -45,10 +45,10 @@ index 465d56f..7c86bbe 100644
 +# Local options override the default global ones:
 +include /etc/redis.conf
 diff --git a/src/config.c b/src/config.c
-index 9081d03..10f8828 100644
+index 9861c5f..8b9b496 100644
 --- a/src/config.c
 +++ b/src/config.c
-@@ -667,6 +667,8 @@ void loadServerConfig(char *filename, char config_from_stdin, char *options) {
+@@ -652,6 +652,8 @@ void loadServerConfig(char *filename, char config_from_stdin, char *options) {
      /* Load the file content */
      if (filename) {
          if ((fp = fopen(filename,"r")) == NULL) {
