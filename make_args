@@ -1,1 +1,2 @@
 MALLOC=libc
+USE_SYSTEMD=yes

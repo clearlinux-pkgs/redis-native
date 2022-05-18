@@ -1,7 +1,7 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 489804cf3c78832c3095f78308f0db345dee2fca Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Thu, 17 May 2018 15:49:23 -0700
-Subject: [PATCH] Install to /usr; honor DESTDIR for install
+Subject: [PATCH 2/4] Install to /usr; honor DESTDIR for install
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 826f6fd..0ca5232 100644
+index 04fd0c8..8f5e1e3 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -44,7 +44,7 @@ else
+@@ -46,7 +46,7 @@ else
  	STD+=-std=c99
  endif
  
@@ -21,8 +21,8 @@ index 826f6fd..0ca5232 100644
  INSTALL_BIN=$(PREFIX)/bin
  INSTALL=install
  PKG_CONFIG?=pkg-config
-@@ -424,13 +424,13 @@ src/help.h:
- 	@../utils/generate-command-help.rb > help.h
+@@ -466,13 +466,13 @@ helgrind:
+ 	$(MAKE) OPTIMIZATION="-O0" MALLOC="libc" CFLAGS="-D__ATOMIC_VAR_FORCE_SYNC_MACROS" REDIS_CFLAGS="-I/usr/local/include" REDIS_LDFLAGS="-L/usr/local/lib"
  
  install: all
 -	@mkdir -p $(INSTALL_BIN)
@@ -42,3 +42,6 @@ index 826f6fd..0ca5232 100644
  
  uninstall:
  	rm -f $(INSTALL_BIN)/{$(REDIS_SERVER_NAME),$(REDIS_BENCHMARK_NAME),$(REDIS_CLI_NAME),$(REDIS_CHECK_RDB_NAME),$(REDIS_CHECK_AOF_NAME),$(REDIS_SENTINEL_NAME)}
+-- 
+2.36.0
+

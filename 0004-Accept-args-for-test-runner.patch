@@ -1,7 +1,7 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 769d4a6f6209fd6eead439aa6b50af144f8110fe Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Sat, 27 Feb 2021 01:07:07 +0000
-Subject: [PATCH] Accept args for test runner
+Subject: [PATCH 4/4] Accept args for test runner
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -9,15 +9,18 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 0ca5232..c96c31f 100644
+index 8f5e1e3..a6d5329 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -384,7 +384,7 @@ distclean: clean
+@@ -423,7 +423,7 @@ distclean: clean
  .PHONY: distclean
  
  test: $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME)
 -	@(cd ..; ./runtest)
 +	@(cd ..; ./runtest $(TEST_RUNNER_ARGS))
  
- test-sentinel: $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME)
- 	@(cd ..; ./runtest-sentinel)
+ test-modules: $(REDIS_SERVER_NAME)
+ 	@(cd ..; ./runtest-moduleapi)
+-- 
+2.36.0
+

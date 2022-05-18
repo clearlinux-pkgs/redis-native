@@ -1,7 +1,7 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 1f40d3d1a849a18f410fa52026149a8dbfda8eea Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Thu, 17 May 2018 15:49:02 -0700
-Subject: [PATCH] Use -O3 optimization
+Subject: [PATCH 1/4] Use -O3 optimization
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/Makefile b/src/Makefile
-index 28d50da..826f6fd 100644
+index 2a0d74d..04fd0c8 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -15,7 +15,7 @@
@@ -21,3 +21,6 @@ index 28d50da..826f6fd 100644
  DEPENDENCY_TARGETS=hiredis linenoise lua hdr_histogram
  NODEPS:=clean distclean
  
+-- 
+2.36.0
+

@@ -1,8 +1,8 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From 3914960ceff6e1ff321842659a64f9a8d2ef4620 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 27 Mar 2019 10:15:43 -0700
-Subject: [PATCH] Modify default config to include a possible local override
- config.
+Subject: [PATCH 3/4] Modify default config to include a possible local
+ override config.
 
 - disable auto-saving (optional, non-default feature)
 - enable systemd notify service use
@@ -16,10 +16,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/redis.conf b/redis.conf
-index e8eff27..f726c11 100644
+index 7635c14..0fce0f2 100644
 --- a/redis.conf
 +++ b/redis.conf
-@@ -272,7 +272,7 @@ daemonize no
+@@ -324,7 +324,7 @@ daemonize no
  # The default is "no". To run under upstart/systemd, you can simply uncomment
  # the line below:
  #
@@ -28,7 +28,7 @@ index e8eff27..f726c11 100644
  
  # If a pid file is specified, Redis writes it where specified at startup
  # and removes it at exit.
-@@ -451,7 +451,7 @@ rdb-del-sync-files no
+@@ -501,7 +501,7 @@ rdb-del-sync-files no
  # The Append Only File will also be created inside this directory.
  #
  # Note that you must specify a directory here, not a file name.
@@ -37,7 +37,7 @@ index e8eff27..f726c11 100644
  
  ################################# REPLICATION #################################
  
-@@ -2049,3 +2049,6 @@ jemalloc-bg-thread yes
+@@ -2274,3 +2274,6 @@ jemalloc-bg-thread yes
  # to suppress
  #
  # ignore-warnings ARM64-COW-BUG
@@ -45,15 +45,18 @@ index e8eff27..f726c11 100644
 +# Local options override the default global ones:
 +include /etc/redis.conf
 diff --git a/src/config.c b/src/config.c
-index 9861c5f..8b9b496 100644
+index 0d435fe..145c170 100644
 --- a/src/config.c
 +++ b/src/config.c
-@@ -652,6 +652,8 @@ void loadServerConfig(char *filename, char config_from_stdin, char *options) {
-     /* Load the file content */
-     if (filename) {
-         if ((fp = fopen(filename,"r")) == NULL) {
-+            if (strcmp(filename, "/etc/redis.conf") == 0)
-+                return;
-             serverLog(LL_WARNING,
-                     "Fatal error, can't open config file '%s': %s",
-                     filename, strerror(errno));
+@@ -664,6 +664,8 @@ void loadServerConfig(char *filename, char config_from_stdin, char *options) {
+             /* No wildcard in filename means we can use the original logic to read and
+              * potentially fail traditionally */
+             if ((fp = fopen(filename, "r")) == NULL) {
++                if (strcmp(filename, "/etc/redis.conf") == 0)
++                    return;
+                 serverLog(LL_WARNING,
+                           "Fatal error, can't open config file '%s': %s",
+                           filename, strerror(errno));
+-- 
+2.36.0
+
