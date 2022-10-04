@@ -4,7 +4,7 @@
 #
 Name     : redis-native
 Version  : 7.0.5
-Release  : 63
+Release  : 64
 URL      : https://download.redis.io/releases/redis-7.0.5.tar.gz
 Source0  : https://download.redis.io/releases/redis-7.0.5.tar.gz
 Source1  : redis-native.tmpfiles
@@ -97,15 +97,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1663791850
+export SOURCE_DATE_EPOCH=1664912168
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto -fstack-protector-strong -fzero-call-used-regs=used "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 make  %{?_smp_mflags}  MALLOC=libc \
 USE_SYSTEMD=yes
 
@@ -118,7 +118,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C src %{_smp_mflags} check TEST_RUNNER_ARGS="--verbose --dont-clean --dump-logs" || :
 
 %install
-export SOURCE_DATE_EPOCH=1663791850
+export SOURCE_DATE_EPOCH=1664912168
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/redis-native
 cp %{_builddir}/redis-%{version}/COPYING %{buildroot}/usr/share/package-licenses/redis-native/44e5add5829f86c049fd08dffce57f00da52fd1f || :
