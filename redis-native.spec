@@ -4,10 +4,10 @@
 # Using build pattern: make
 #
 Name     : redis-native
-Version  : 7.0.10
-Release  : 69
-URL      : https://download.redis.io/releases/redis-7.0.10.tar.gz
-Source0  : https://download.redis.io/releases/redis-7.0.10.tar.gz
+Version  : 7.0.11
+Release  : 70
+URL      : https://download.redis.io/releases/redis-7.0.11.tar.gz
+Source0  : https://download.redis.io/releases/redis-7.0.11.tar.gz
 Source1  : redis-native.tmpfiles
 Source2  : redis.service
 Summary  : An Extensible Extension Language
@@ -18,7 +18,6 @@ Requires: redis-native-config = %{version}-%{release}
 Requires: redis-native-data = %{version}-%{release}
 Requires: redis-native-license = %{version}-%{release}
 Requires: redis-native-services = %{version}-%{release}
-BuildRequires : buildreq-cmake
 BuildRequires : jemalloc-dev
 BuildRequires : procps-ng
 BuildRequires : systemd-dev
@@ -83,14 +82,15 @@ license components for the redis-native package.
 %package services
 Summary: services components for the redis-native package.
 Group: Systemd services
+Requires: systemd
 
 %description services
 services components for the redis-native package.
 
 
 %prep
-%setup -q -n redis-7.0.10
-cd %{_builddir}/redis-7.0.10
+%setup -q -n redis-7.0.11
+cd %{_builddir}/redis-7.0.11
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -101,7 +101,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1679414219
+export SOURCE_DATE_EPOCH=1681750297
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -122,7 +122,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C src %{_smp_mflags} check TEST_RUNNER_ARGS="--verbose --dont-clean --dump-logs" || :
 
 %install
-export SOURCE_DATE_EPOCH=1679414219
+export SOURCE_DATE_EPOCH=1681750297
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/redis-native
 cp %{_builddir}/redis-%{version}/COPYING %{buildroot}/usr/share/package-licenses/redis-native/44e5add5829f86c049fd08dffce57f00da52fd1f || :
