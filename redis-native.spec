@@ -4,10 +4,10 @@
 # Using build pattern: make
 #
 Name     : redis-native
-Version  : 7.0.11
-Release  : 70
-URL      : https://download.redis.io/releases/redis-7.0.11.tar.gz
-Source0  : https://download.redis.io/releases/redis-7.0.11.tar.gz
+Version  : 7.0.12
+Release  : 71
+URL      : https://download.redis.io/releases/redis-7.0.12.tar.gz
+Source0  : https://download.redis.io/releases/redis-7.0.12.tar.gz
 Source1  : redis-native.tmpfiles
 Source2  : redis.service
 Summary  : An Extensible Extension Language
@@ -89,30 +89,42 @@ services components for the redis-native package.
 
 
 %prep
-%setup -q -n redis-7.0.11
-cd %{_builddir}/redis-7.0.11
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
+%setup -q -n redis-7.0.12
+cd %{_builddir}/redis-7.0.12
+%patch -P 1 -p1
+%patch -P 2 -p1
+%patch -P 3 -p1
+%patch -P 4 -p1
+pushd ..
+cp -a redis-7.0.12 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1681750297
+export SOURCE_DATE_EPOCH=1689007893
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 make  %{?_smp_mflags}  MALLOC=libc \
 USE_SYSTEMD=yes
 
+pushd ../buildavx2
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+make  %{?_smp_mflags}  MALLOC=libc \
+USE_SYSTEMD=yes
+popd
 
 %check
 export LANG=C.UTF-8
@@ -122,7 +134,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make -C src %{_smp_mflags} check TEST_RUNNER_ARGS="--verbose --dont-clean --dump-logs" || :
 
 %install
-export SOURCE_DATE_EPOCH=1681750297
+export SOURCE_DATE_EPOCH=1689007893
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/redis-native
 cp %{_builddir}/redis-%{version}/COPYING %{buildroot}/usr/share/package-licenses/redis-native/44e5add5829f86c049fd08dffce57f00da52fd1f || :
@@ -131,6 +143,9 @@ cp %{_builddir}/redis-%{version}/deps/hdr_histogram/LICENSE.txt %{buildroot}/usr
 cp %{_builddir}/redis-%{version}/deps/hiredis/COPYING %{buildroot}/usr/share/package-licenses/redis-native/e9c1298de98016808910005a33de3a5f25dce05e || :
 cp %{_builddir}/redis-%{version}/deps/jemalloc/COPYING %{buildroot}/usr/share/package-licenses/redis-native/c797cef3f1b13a960a5119a084fb88529a924fd7 || :
 cp %{_builddir}/redis-%{version}/deps/lua/COPYRIGHT %{buildroot}/usr/share/package-licenses/redis-native/a6efc4d11f332f4843bc25b557c6bf3e5ef51458 || :
+pushd ../buildavx2/
+%make_install_v3
+popd
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE2} %{buildroot}/usr/lib/systemd/system/redis.service
@@ -142,12 +157,16 @@ install sentinel.conf %{buildroot}/usr/share/doc/redis/
 mkdir -p %{buildroot}/usr/share/defaults/etc
 install redis.conf %{buildroot}/usr/share/defaults/etc/
 ## install_append end
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/redis-benchmark
+/V3/usr/bin/redis-cli
+/V3/usr/bin/redis-server
 /usr/bin/redis-benchmark
 /usr/bin/redis-check-aof
 /usr/bin/redis-check-rdb
